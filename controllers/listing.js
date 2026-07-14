@@ -5,8 +5,14 @@ module.exports.index = async (req, res) => {
     if(search){
          let allListings = await Listing.find({
              $or: [
-        { location: search },
-        { country: search }
+        { location:{
+            $regex: search,
+            $options: "i",
+        } },
+        { country: {
+            $regex: search,
+            $options: "i",
+        } }
                  ]
          });
         
