@@ -2,7 +2,12 @@ const Listing = require("../models/listing.js");
 
 module.exports.index = async (req, res) => {
     let search = req.query.search?.trim() ;
-    
+    let {category}=  req.query;
+    if(category) {
+        let allListings = await Listing.find({category :category});
+       return  res.render("listings/index.ejs" , {allListings});
+    }
+
     if(search){
          let allListings = await Listing.find({
              $or: [
@@ -22,6 +27,7 @@ module.exports.index = async (req, res) => {
          });
         
         return  res.render("listings/index.ejs" ,  { allListings });
+        
          
     }
     let allListings = await Listing.find({})
