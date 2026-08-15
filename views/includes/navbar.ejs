@@ -1,5 +1,5 @@
 <style>
-  .search-btn{
+  .search-btn {
     background-color: #fe424d;
     color: #fff;
     border-radius: 25px;
@@ -7,16 +7,16 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0 1rem 0 1rem;
-}
-  
-  .search-btn:hover{
+  }
+
+  .search-btn:hover {
     background-color: #fe424d;
     color: #fff;
   }
 
   .search-btn i {
-    display: inline ;
-    margin-right: 0.4rem ;
+    display: inline;
+    margin-right: 0.4rem;
   }
 
   .search-inp {
@@ -24,11 +24,12 @@
     padding: 0.5rem 3rem 0.5rem 3rem;
     font-size: 1rem;
   }
+
   @media (max-width: 991px) {
     .navbar-collapse {
-        background-color: white;
+      background-color: white;
     }
-}
+  }
 </style>
 
 <nav class="navbar  navbar-expand-lg navbar-light bg-body-light sticky-top">
@@ -39,26 +40,40 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link" href="/listings">Explore</a>     
+        <a class="nav-link" href="/listings">Explore</a>
       </div>
-      <div class="navbar-nav ms-auto" >
-        <form class="d-flex" role="search" method="get" action="/listings">
-        <input class="form-control me-2 search-inp" type="search" placeholder="Search destinations" name="search"/>
-        <button class="btn search-btn" type="submit"> <i class="fa-solid fa-magnifying-glass"></i> Search</button>
-    </form>
-      </div>
-      <div class="navbar-nav ms-auto">
-        <a class="nav-link" href="/listings/new">Wanderlust your home</a>
-        <% if(!currUser) { %> 
-          <a class="nav-link active  " aria-current="page" href="/signup"><b>Sign Up</b></a>
-          <a class="nav-link" href="/login"><b>Log in</b></a>
-       <%  }  %>
-        <% if(currUser) { %> 
-            <a class="nav-link" href="/logout"><b>Log out</b></a>
-       <%  }  %>
-        
-        
-      </div>
+
+      <% if(currUser) { %>
+
+        <div class="navbar-nav">
+          <a class="nav-link" href="/listings?owned">My listings</a>
+        </div>
+
+        <div class="navbar-nav">
+          <a class="nav-link" href="/bookings">My Bookings</a>
+        </div>
+
+        <% } %>
+
+          <div class="navbar-nav ms-auto">
+            <form class="d-flex" role="search" method="get" action="/listings">
+              <input class="form-control me-2 search-inp" type="search" placeholder="Search destinations"
+                name="search" />
+              <button class="btn search-btn" type="submit"> <i class="fa-solid fa-magnifying-glass"></i> Search</button>
+            </form>
+          </div>
+          <div class="navbar-nav ms-auto">
+            <a class="nav-link" href="/listings/new">Wanderlust your home</a>
+            <% if(!currUser) { %>
+              <a class="nav-link active  " aria-current="page" href="/signup"><b>Sign Up</b></a>
+              <a class="nav-link" href="/login"><b>Log in</b></a>
+              <% } %>
+                <% if(currUser) { %>
+                  <a class="nav-link" href="/logout"><b>Log out</b></a>
+                  <% } %>
+
+
+          </div>
     </div>
   </div>
 </nav>

@@ -1,0 +1,46 @@
+<% layout("/layouts/boilerplate") %>
+
+
+    <div class="row mt-3">
+        <div class="col-8 offset-2">
+            <h3>Book this listing</h3>
+            <br>
+            <form method="post" action="/listings/<%= listing.id %>/book" novalidate class="needs-validation" >
+                <div class="mb-3">
+                    <h3>
+                        <%= listing.title %>
+                    </h3>
+                </div>
+
+                <div class="mb-3">
+                    <label for="checkIn" class="form-label">Check-In</label>
+                     <input name="booking[checkIn]" type="date" class="form-control"required >
+                    <div class="invalid-feedback">Please enter your in date</div>
+                </div>
+                <div class="mb-3">
+                    <label for="checkOut" class="form-label">Check-Out</label>
+                     <input name="booking[checkOut]" type="date" class="form-control" required>
+                    <div class="invalid-feedback">Please enter your out date</div>
+                </div>
+
+                
+                    <div class="mb-3 col-md-8">
+                        <label for="price" class="form-label">Price</label>
+                       <h5> &#8377; <%= listing.price.toLocaleString("en-IN") %>/night</h5>
+                        
+                    </div>
+
+                <div class="mb-3">
+                    <label for="guest" class="form-label">Guests</label>
+                    <input name="booking[guests]" placeholder="1 , 2" type="number"
+                        class="form-control" required>
+                    <div class="invalid-feedback">Guests should be valid</div>
+                </div>
+
+                <br><br>
+
+                <button class="btn btn-dark add-btn mb-3">Book now</button>
+                <br><br>
+            </form>
+        </div>
+    </div>

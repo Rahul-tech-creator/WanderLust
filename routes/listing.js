@@ -1,13 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js");
-const Listing = require("../models/listing.js");
 const { isLoggedIn, isOwner, validateListing } = require("../middlewares.js");
 const listingController = require("../controllers/listing.js");
 const multer= require("multer");
 const { storage } = require("../cloudConfig.js");
 const upload = multer({storage});
-
 
 router
     .route("/")
@@ -33,5 +31,9 @@ router
 // Edit Route
 router.get("/:id/edit",isLoggedIn, isOwner, wrapAsync(listingController.renderEditFrom));
 
+router
+    .route("/:id/book" )
+    .get(isLoggedIn, wrapAsync(listingController.renderNewBooking))
+    .post(isLoggedIn, wrapAsync(listingController.postNewBooking));
 
 module.exports = router;
