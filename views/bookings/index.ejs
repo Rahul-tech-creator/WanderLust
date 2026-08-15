@@ -1,10 +1,11 @@
 <% layout("/layouts/boilerplate") %>
 
 <style>
-.booking{
-    border-radius: 20px;
-}
+    .booking {
+        border-radius: 20px;
+    }
 </style>
+
 <br>
 
 <form action="/bookings/requests">
@@ -13,7 +14,7 @@
 
 <br><br>
 
-<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 mt-3">
 
     <% for (let booking of bookings) { %>
 
@@ -34,7 +35,6 @@
 
                 <p class="card-text">
                     &#8377; <%= booking.listing.price.toLocaleString("en-IN") %> / night
-                   
                 </p>
 
                 <p class="card-text">
@@ -55,7 +55,7 @@
                     <b>
                         Total:
                         &#8377; <%= booking.price.toLocaleString("en-IN") %>
-                         <b><i class="tax-info">&nbsp; +18% GST</i></b>
+                        <b><i class="tax-info">&nbsp; +18% GST</i></b>
                     </b>
                 </p>
 

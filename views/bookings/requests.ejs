@@ -1,105 +1,123 @@
 <% layout("/layouts/boilerplate") %>
 
-    <style>
-        .booking {
-            border-radius: 20px;
-        }
+<style>
+    .booking {
+        border-radius: 20px;
+    }
 
-        .status {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        .btn{
-            border-radius: 10px !important;
-        }
-    </style>
-    <br>
+    .status {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
 
-    <form action="/bookings">
-        <button class="btn btn-danger booking">My Bookings</button>
-    </form>
+    .btn {
+        border-radius: 10px !important;
+    }
+</style>
 
-    <br><br>
+<br>
 
-    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+<form action="/bookings">
+    <button class="btn btn-danger booking">My Bookings</button>
+</form>
 
-        <% for (let booking of bookings) { %>
+<br><br>
 
-            <div class="card col listing-card">
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 mt-3">
 
-                <img src="<%= booking.listing.image.url %>" class="card-img-top" alt="listing_image"
-                    style="height: 20rem;">
+    <% for (let booking of bookings) { %>
 
-                <div class="card-body">
+        <div class="card col listing-card">
 
-                    <p class="card-text">
-                        <b>
-                            <%= booking.listing.title %>
-                        </b>
-                    </p>
+            <img
+                src="<%= booking.listing.image.url %>"
+                class="card-img-top"
+                alt="listing_image"
+                style="height: 20rem;"
+            >
 
-                    <p class="card-text">
-                        <b>email:</b>
-                        <%= booking.user.email %>
+            <div class="card-body">
 
-                    </p>
-                    <p class="card-text">
-                        <b>username:</b>
-                        <%= booking.user.username %>
+                <p class="card-text">
+                    <b>
+                        <%= booking.listing.title %>
+                    </b>
+                </p>
 
-                    </p>
-                    <p class="card-text">
-                        &#8377; <%= booking.listing.price.toLocaleString("en-IN") %> / night
+                <p class="card-text">
+                    <b>email:</b>
+                    <%= booking.user.email %>
+                </p>
 
-                    </p>
+                <p class="card-text">
+                    <b>username:</b>
+                    <%= booking.user.username %>
+                </p>
 
-                    <p class="card-text">
-                        Check-In:
-                        <%= booking.checkIn.toLocaleDateString("en-IN") %>
-                    </p>
+                <p class="card-text">
+                    &#8377; <%= booking.listing.price.toLocaleString("en-IN") %> / night
+                </p>
 
-                    <p class="card-text">
-                        Check-Out:
-                        <%= booking.checkOut.toLocaleDateString("en-IN") %>
-                    </p>
+                <p class="card-text">
+                    Check-In:
+                    <%= booking.checkIn.toLocaleDateString("en-IN") %>
+                </p>
 
-                    <p class="card-text">
-                        Guests: <%= booking.guests %>
-                    </p>
+                <p class="card-text">
+                    Check-Out:
+                    <%= booking.checkOut.toLocaleDateString("en-IN") %>
+                </p>
 
-                    <p class="card-text">
-                        <b>
-                            Total:
-                            &#8377; <%= booking.price.toLocaleString("en-IN") %>
-                                <b><i class="tax-info">&nbsp; +18% GST</i></b>
-                        </b>
-                    </p>
+                <p class="card-text">
+                    Guests: <%= booking.guests %>
+                </p>
 
-                    <p class="card-text">
-                        Status:
-                        <b>
-                            <%= booking.status %>
-                        </b>
-                    </p>
+                <p class="card-text">
+                    <b>
+                        Total:
+                        &#8377; <%= booking.price.toLocaleString("en-IN") %>
+                        <b><i class="tax-info">&nbsp; +18% GST</i></b>
+                    </b>
+                </p>
 
-                  <%   if(  booking.status  == "pending") { %>
-                   
+                <p class="card-text">
+                    Status:
+                    <b>
+                        <%= booking.status %>
+                    </b>
+                </p>
+
+                <% if (booking.status == "pending") { %>
+
                     <div class="status">
-                        <form action="/bookings/<%= booking._id  %>/accept" method="POST">
-                            <button class="btn btn-dark accept">Accept</button>
+
+                        <form
+                            action="/bookings/<%= booking._id %>/accept"
+                            method="POST"
+                        >
+                            <button class="btn btn-dark accept">
+                                Accept
+                            </button>
                         </form>
 
-                        <form action="/bookings/<%= booking._id  %>/reject" method="POST">
-                            <button class="btn btn-danger reject">Reject</button>
+                        <form
+                            action="/bookings/<%= booking._id %>/reject"
+                            method="POST"
+                        >
+                            <button class="btn btn-danger reject">
+                                Reject
+                            </button>
                         </form>
+
                     </div>
-              <%   }  %>
 
-                </div>
+                <% } %>
 
             </div>
 
-            <% } %>
+        </div>
 
-    </div>
+    <% } %>
+
+</div>
