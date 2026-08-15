@@ -28,11 +28,14 @@
                 <p class="card-text">
                     <%= listing.category %>
                 </p>
-
+                <form action="/listings/<%=listing.id%>/book">
+                    <button class="btn btn-dark book-btn offset-5">Book now</button>
+                </form>
+                
             </div>
         </div>
-
         <% if (currUser && currUser._id.equals(listing.owner._id)) { %>
+
             <div class="btns offset-3 ">
 
 
@@ -43,9 +46,9 @@
                 <form method="post" action="/listings/<%=listing._id%>/?_method=DELETE">
                     <button class="btn btn-dark offset-7 delete">Delete </button>
                 </form>
+              
             </div>
             <% } %>
-
                 <div class="col-8 offset-3 mb-3">
                     <hr>
                     <% if (currUser) { %>

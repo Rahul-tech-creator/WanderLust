@@ -136,4 +136,11 @@ body{
     padding-right: 0;
 }
 
+/* Booking  */
+.book-btn{
+    background-color: #fe424d !important;
+    border: none !important;
+    border-radius: 0.6rem !important;
+}
+
 

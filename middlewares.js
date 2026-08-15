@@ -2,6 +2,7 @@ const Listing = require("./models/listing.js");
 const Review = require("./models/reviews.js");
 const ExpressError = require("./utils/expressErrors.js");
 const { listingSchema, reviewSchema } = require("./schema.js");
+const Booking = require("./models/booking.js");
 
 module.exports.isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
@@ -70,3 +71,20 @@ module.exports.isReviewAuthor = async (req, res, next) => {
 
     next();
 };
+
+module.exports.isBookingOwner = async (req , res , next) => {
+    let {id }= req.params;
+    let booking =( await( Booking.findById(id)).populate("listing"));
+    if(booking){
+
+        if(!booking.listing.owner.equals(req.user._id)){
+            req.flash("error", "You are not authorized to modify this listing");
+            return res.redirect("/bookings");
+        }
+            next();
+    }
+    else{
+        next(new ExpressError(404 , "Page not found"));
+    }
+
+}

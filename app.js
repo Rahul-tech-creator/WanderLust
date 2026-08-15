@@ -18,7 +18,10 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
-
+const listingRoutes = require("./routes/listing.js");
+const reviewRoutes = require("./routes/review.js");
+const userRoutes = require("./routes/user.js");
+const bookingRoutes = require("./routes/booking.js");
 // let Mongo_url = "mongodb://127.0.0.1:27017/wanderlust"
 
 const dbUrl =process.env.ATLASDB_URL
@@ -30,15 +33,9 @@ main()
     console.log(err);
 })
 
-
 async function main() {
     await mongoose.connect(dbUrl);
 }
-
-
-const listingRoutes = require("./routes/listing.js");
-const reviewRoutes = require("./routes/review.js");
-const userRoutes = require("./routes/user.js");
 
 app.set("view engine" , "ejs");
 app.set("views" , path.join(__dirname,"views"));
@@ -60,7 +57,6 @@ store.on("error" , (err) => {
     console.log("Error in mongo session store " , err);
 })
 
-
 const sessionOptions = {
     store,
     secret: process.env.SECRET,
@@ -73,12 +69,6 @@ const sessionOptions = {
     },
 };
 
-
-// app.get("/" , (req ,res) => {
-//     res.send("Hi! I am Root!");
-// })
-
-
 app.use(session(sessionOptions));
 app.use(flash());
 
@@ -88,7 +78,6 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-
 app.use((req , res , next) =>  {
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
@@ -96,21 +85,10 @@ app.use((req , res , next) =>  {
     next();
 })
 
-
-// app.get("/demoUser" , async (req , res) => {
-//     let fakeUser = new User({
-//         email: "abc@gmail.com",
-//         username:"sigma-student",
-//     });
-
-//     let registerdUser =  await  User.register(fakeUser , "helloWorld");
-//     res.send(registerdUser);
-// })
-
 app.use("/listings" , listingRoutes);
 app.use("/listings/:id/reviews" , reviewRoutes);
 app.use("/" , userRoutes);
-
+app.use("/bookings" , bookingRoutes);
 
 app.all("/{*splat}" , (req, res ,next) => {
     next( new ExpressError(404 , "Page not found"));
@@ -124,8 +102,3 @@ app.use((err , req , res , next) => {
 app.listen(8080 , () => {
     console.log("Server is running on port 8080");
 });
-
-
-
-
-

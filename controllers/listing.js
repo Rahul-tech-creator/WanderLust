@@ -1,11 +1,32 @@
 const Listing = require("../models/listing.js");
+const ExpressError = require("../utils/expressErrors.js"); 
+const Booking = require("../models/booking.js");
 
 module.exports.index = async (req, res) => {
     let search = req.query.search?.trim() ;
     let {category}=  req.query;
+    if(req.query.owned !== undefined){
+        let allListings = await Listing.find({owner:req.user._id});
+        if(allListings.length){
+            return res.render("listings/index.ejs" , {allListings});
+        }
+        else{
+            req.flash("error" , "You dont have any listing. Please create one");
+            return res.redirect("/listings");
+        }
+        
+    }
+    
     if(category) {
         let allListings = await Listing.find({category :category});
-       return  res.render("listings/index.ejs" , {allListings});
+        if(allListings.length){
+            return  res.render("listings/index.ejs" , {allListings});
+        }
+        else{
+            req.flash("error" , "We dont have any listings with this category. Please try another!");
+            return res.redirect("/listings");
+        }
+       
     }
 
     if(search){
@@ -25,9 +46,13 @@ module.exports.index = async (req, res) => {
         } },
                  ]
          });
-        
-        return  res.render("listings/index.ejs" ,  { allListings });
-        
+         if(allListings.length){
+            return  res.render("listings/index.ejs" ,  { allListings });
+         }
+        else{
+            req.flash("error" , "No such listings!");
+            return res.redirect("/listings");
+        }
          
     }
     let allListings = await Listing.find({})
@@ -101,3 +126,43 @@ module.exports.destroyListing = async (req, res) => {
     req.flash("success", " Listing Deleted");
     res.redirect("/listings");
 };
+
+module.exports.renderNewBooking = async(req , res , next) => {
+    let {id} = req.params;
+    let listing = await  Listing.findById(id);
+    if(listing){
+        return res.render("bookings/new.ejs" , {listing});
+
+    }
+    else{
+        next(new ExpressError(404 , "Listing not found"));
+    }
+}
+
+module.exports.postNewBooking = async(req , res , next) => {
+    
+    let {id} = req.params;
+    let listing = await Listing.findById(id);
+    if(listing){
+
+    let {checkIn , checkOut , guests} = req.body.booking;
+    let inDate = new Date(checkIn);
+    let outDate = new Date(checkOut);
+   if(outDate > inDate){
+    let nights = (outDate - inDate) / 86400000 ;
+        let totalPrice = (listing.price * nights );
+        const booking =  await  Booking.insertOne({checkIn:inDate ,checkOut: outDate ,guests:guests, price:totalPrice ,user:req.user._id , listing:listing.id} );
+        req.flash("success" , "Booking req sent");
+        return res.redirect("/listings");
+   }
+   else{
+        req.flash("error" , "Invalid in and out date please check");
+        return res.redirect("/listings/" + id + "/book");
+   }
+}
+else{
+     next( new ExpressError(404 , "Listing not found"));
+}
+
+
+}
